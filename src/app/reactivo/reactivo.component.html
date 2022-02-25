@@ -1,0 +1,76 @@
+<h4>Formulario: Reactivo</h4>
+<hr>
+<form [formGroup]="formCliente" (ngSubmit)="guardar()" id="forma">
+
+    <div class="form-group row">
+        <label for="nombre" class="col-2 col-form-label">Nombre:</label>
+        <div class="col-8">
+            <input type="text" class="form-control" placeholder="Escribe nombre..." name="nombre" formControlName="nombre" [ngClass]="{'is-invalid': formCliente.get('nombre')?.errors}">
+            <div *ngIf="formCliente.get('nombre')?.errors?.['required']" class="alert alert-danger" role="alert">
+                El campo nombre es requerido
+            </div>
+            <div *ngIf="formCliente.get('nombre')?.errors?.['minlength']" class="alert alert-danger" role="alert">
+                El campo nombre debe tener por lo menos {{formCliente.get('nombre')?.errors?.['minlength'].requiredLength}} caracteres
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <label for="apellido" class="col-2 col-form-label">Apellido:</label>
+        <div class="col-8">
+            <input type="text" class="form-control" placeholder="Escribe apellido..." name="apellido" formControlName="apellido">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="correo" class="col-2 col-form-label">Correo:</label>
+        <div class="col-8">
+            <input type="email" class="form-control" placeholder="Escribe correo..." name="correo" formControlName="correo">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="pais" class="col-2 col-form-label">Pais:</label>
+        <div class="col-8">
+            <select name="pais" class="form-control" formControlName="pais">
+                <option value="">Selecciona un pais...</option>
+                <option *ngFor="let pais of paises" [value]="pais.codigo">{{pais.nombre}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-8">
+            <div *ngFor="let s of sexos" class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="sexo" id="{{s}}" [value]="s" formControlName="sexo">
+                <label class="form-check-label" for="{{s}}">{{s}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-8">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="acepta" formControlName="acepta">
+                <label class="form-check-label" for="acepta">Acepto las condiciones</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-8">
+            <button class="btn btn-success" type="submit" form="forma">Guardar</button>
+        </div>
+    </div>
+
+    <!-- <button class="btn btn-danger" (click)="cambiarNombre()">Cambiar nombre</button> -->
+
+</form>
+<br><br>
+
+<button class="btn btn-danger" (click)="quitarValNombre()">Quitar validaciones a nombre</button>
+
+<h5>Valor del form</h5>
+<pre>
+    {{formCliente.value | json }}
+</pre>
+
+<h5>Valor del objeto usuario</h5>
+<pre>
+    {{usuario | json}}
+</pre>

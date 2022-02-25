@@ -1,0 +1,84 @@
+<h4>Formulario: Template-Driven</h4>
+<hr>
+<form #forma="ngForm" (ngSubmit)="guardar(forma)" id="forma">
+
+    <div class="form-group row">
+        <label for="nombre" class="col-2 col-form-label">Nombre:</label>
+        <div class="col-8">
+            <input type="text" class="form-control" placeholder="Escribe nombre..." name="nombre" required minlength="3" [(ngModel)]="usuario.nombre" #nombre="ngModel" [ngClass]="{'is-invalid': nombre.errors && nombre.touched}">
+            <div *ngIf="nombre.errors?.['required'] && nombre.touched" class="alert alert-danger" role="alert">
+                El campo nombre es requerido
+            </div>
+            <div *ngIf="nombre.errors?.['minlength'] && nombre.touched" class="alert alert-danger" role="alert">
+                El campo nombre debe tener por lo menos {{nombre.errors?.['minlength'].requiredLength}} caracteres
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="apellido" class="col-2 col-form-label">Apellido:</label>
+        <div class="col-8">
+            <input type="text" class="form-control" placeholder="Escribe apellido..." name="apellido" required [(ngModel)]="usuario.apellido" #apellido="ngModel" [ngClass]="{'is-invalid': apellido.errors && apellido.touched}">
+            <div *ngIf="apellido.errors?.['required'] && apellido.touched" class="alert alert-danger" role="alert">
+                El campo apellido es requerido
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="correo" class="col-2 col-form-label">Correo:</label>
+        <div class="col-8">
+            <input type="email" class="form-control" placeholder="Escribe correo..." name="correo" required [(ngModel)]="usuario.correo" #correo="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [ngClass]="{'is-invalid': correo.errors && correo.touched}">
+            <div *ngIf="correo.errors?.['required'] && correo.touched" class="alert alert-danger" role="alert">
+                El campo correo es requerido.
+            </div>
+            <div *ngIf="correo.errors?.['pattern'] && correo.touched" class="alert alert-danger" role="alert">
+                El correo no es válido.
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="pais" class="col-2 col-form-label">Pais:</label>
+        <div class="col-8">
+            <select name="pais" class="form-control" [(ngModel)]="usuario.pais">
+                <option value="">Selecciona un pais...</option>
+                <option *ngFor="let pais of paises" [value]="pais.codigo">{{pais.nombre}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-8">
+            <div *ngFor="let s of sexos" class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="sexo" id="{{s}}" [value]="s" [(ngModel)]="usuario.sexo">
+                <label class="form-check-label" for="{{s}}">{{s}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-8">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" [(ngModel)]="usuario.acepta" name="acepta" required>
+                <label class="form-check-label" for="acepta">Acepto las condiciones</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="archivo" class="col-2 col-form-label">Archivo:</label>
+        <div class="col-8">
+            <input type="file" class="form-control-file" name="archivo" [(ngModel)]="usuario.archivo" #archivo="ngModel" (change)="seleccionarArchivo($event)">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-8">
+            <button class="btn btn-success" type="submit" form="forma" [disabled]="!forma.valid">Guardar</button>
+        </div>
+    </div>
+
+    <!-- <button class="btn btn-danger" (click)="cambiarNombre()">Cambiar nombre</button> -->
+
+</form>
+<br><br>
+
+<pre>
+    {{usuario | json}}
+</pre>
+
+<h5>¿Formulario Válido? {{forma.valid}}</h5>
